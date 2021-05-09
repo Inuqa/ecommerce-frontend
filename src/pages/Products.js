@@ -5,11 +5,12 @@ import axios from 'axios';
 import {Link} from 'react-router-dom';
 import Spinner from 'react-bootstrap/Spinner';
 import Pagination from '../components/Pagination';
+import useQuery from '../hooks/useQuery';
 
 const Product = () => {
   const [products, setProducts] = React.useState([]);
   const [isLoading, setIsloading] = React.useState(false);
-  const [offset, setOffset] = React.useState(0);
+  const [offset] = React.useState(useQuery().get('offset'));
   const [totalPages, setTotalPages] = React.useState(1);
 
   const getProducts = () => {
@@ -22,28 +23,9 @@ const Product = () => {
         .then(() => setIsloading(false));
   };
 
-  const handlePageClick = (e) => {
-    console.log(e.target);
-    console.log(e.target.value);
-    console.log(e.target.innerHTML);
-    if (e.target.innerHTML === '&lt;') {
-      console.log('asd');
-      console.log(offset);
-      if (offset === 0 ) {
-        console.log('asdasd');
-        return;
-      }
-      setOffset(offset - 8);
-    } else if (e.target.innerHTML === '&gt;') {
-      setOffset(offset + 8);
-    } else {
-      setOffset(Math.ceil((e.target.innerHTML - 1) * 8));
-    }
-  };
-
   React.useEffect(() => {
     getProducts();
-  }, [offset]);
+  }, []);
 
   const renderArr = products.map((item) => (
     <Col key={item.id} md={3}>
@@ -74,8 +56,8 @@ const Product = () => {
     <Row className="mt-5">
       {renderArr}
       <Pagination
+        url={'http://localhost:3000/products'}
         pages={totalPages}
-        handlePageClick={handlePageClick}
         offset={offset}
       />
     </Row>
