@@ -5,20 +5,29 @@ import {
   Route,
 } from 'react-router-dom';
 import Header from './components/Header';
+import Product from './pages/Product';
+import Products from './pages/Products';
+import Container from 'react-bootstrap/Container';
 import './App.css';
 
 function App() {
   return (
     <Router>
-      <Header />
-      <Switch>
-        <Route path="/about">
-        </Route>
-        <Route path="/products">
-        </Route>
-        <Route path="/">
-        </Route>
-      </Switch>
+      <Container>
+        <Header />
+        <Switch>
+          <Route path="/about">
+          </Route>
+          <Route path="/products/:id">
+            <Product />
+          </Route>
+          <Route exact path="/products">
+            <Products />
+          </Route>
+          <Route path="/">
+          </Route>
+        </Switch>
+      </Container>
     </Router>
   );
 }
