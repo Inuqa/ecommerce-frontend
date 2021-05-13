@@ -27,6 +27,12 @@ const Header = () => {
         About
           </Link>
         </Nav.Item>
+        <Nav.Item>
+          <Link className="nav-link" to="/cart"
+          >
+        Cart
+          </Link>
+        </Nav.Item>
       </Nav>
     </Navbar>
   );
