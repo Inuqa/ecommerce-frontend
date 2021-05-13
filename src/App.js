@@ -7,6 +7,8 @@ import {
 import Header from './components/Header';
 import Product from './pages/Product';
 import Products from './pages/Products';
+import Home from './pages/Home';
+import Cart from './pages/Cart';
 import Container from 'react-bootstrap/Container';
 import './App.css';
 
@@ -24,7 +26,11 @@ function App() {
           <Route exact path="/products">
             <Products />
           </Route>
+          <Route exact path="/cart">
+            <Cart />
+          </Route>
           <Route path="/">
+            <Home />
           </Route>
         </Switch>
       </Container>
