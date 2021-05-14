@@ -2,35 +2,33 @@ import React from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Spinner from 'react-bootstrap/Spinner';
-import axios from 'axios';
 import {useParams} from 'react-router-dom';
 import {addItem} from '../features/cart/cartSlice';
-import {useDispatch} from 'react-redux';
+import {fetchProduct, selectProduct} from '../features/products/productsSlice';
+import {useDispatch, useSelector} from 'react-redux';
 import Form from 'react-bootstrap/Form';
 
 const Product = () => {
-  const [product, setProduct] = React.useState([]);
-  const [isLoading, setIsLoading] = React.useState(true);
   const [quantity, setQuantity] = React.useState(1);
-  const [selectedVariant, setSelectedVariant] = React.useState({});
+  const [selectedVariant, setSelectedVariant] = React.useState();
   const dispatch = useDispatch();
   const {id} = useParams();
+
+  const product = useSelector((state) => selectProduct(state, +id));
+  const productsStatus = useSelector((state) => state.product.status);
   React.useEffect(() => {
-    axios.get(`http://localhost:2000/products/${id}`)
-        .then((res) => {
-          setProduct(res.data);
-          return res;
-        })
-        .then((res) => setSelectedVariant(res.data.variants[0]))
-        .then(() => setIsLoading(false));
+    if (!product) {
+      dispatch(fetchProduct(id));
+    }
   }, []);
 
+  React.useEffect(() => {
+    if (product) setSelectedVariant(product.variants[0].id);
+  }, [product]);
+
+  console.log(selectedVariant);
   const addToCart = () => {
-    dispatch(addItem({product: {
-      ...selectedVariant,
-      image: product.url,
-      title: product.title,
-    }, quantity: +quantity}));
+    dispatch(addItem({productId: selectedVariant, quantity: +quantity}));
   };
 
   const handleSelected = (e) => {
@@ -41,16 +39,18 @@ const Product = () => {
     setQuantity(e.target.value);
   };
 
-  console.log(product);
-  if (isLoading) {
-    return <Spinner
+  let content;
+
+  if (productsStatus === 'loading') {
+    content = <Spinner
       style={{position: 'absolute', top: '50%', left: '50%'}}
       className="loading-spinner"
       animation="border"
       variant="primary"
     />;
-  }
-  return (
+  } else if (product) {
+    console.log(product);
+    content =
     <Row className="mt-5">
       <Col md={6}>
         <Row>
@@ -69,7 +69,7 @@ const Product = () => {
             {product.variants.map((item) => (
               <option
                 key={item.id}
-                value={item}
+                value={item.id}
               >{item.size}</option>
             ))}
           </Form.Control>
@@ -77,7 +77,13 @@ const Product = () => {
         <button onClick={addToCart}>Añadir al carrito</button>
         <input onChange={handleQuantity} value={quantity} type="number" />
       </Col>
-    </Row>
+    </Row>;
+  }
+
+  return (
+    <>
+      {content}
+    </>
   );
 };
 
