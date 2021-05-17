@@ -1,7 +1,19 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import {fetchProduct} from '../products/productsSlice';
+import axios from 'axios';
 
 const initialState = { };
+
+export const fetchMissingVariants = createAsyncThunk(
+    'variants/fetchVariants', async (ids) => {
+      let query = '';
+      ids.forEach((item) => {
+        query += `ids[]=${item}&`;
+      });
+      const res = await axios.get(`http://localhost:2000/variants?${query}`);
+      return res.data;
+    },
+);
 
 export const variantsSlice = createSlice({
   name: 'variants',
@@ -12,6 +24,11 @@ export const variantsSlice = createSlice({
     [fetchProduct.fulfilled]: (state, action) => {
       action.payload.variants.forEach((variant) => {
         state[variant.id] = variant;
+      });
+    },
+    [fetchMissingVariants.fulfilled]: (state, action) => {
+      action.payload.variants.forEach((item) => {
+        state[item.id] = item;
       });
     },
   },

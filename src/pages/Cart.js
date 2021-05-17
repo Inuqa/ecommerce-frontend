@@ -3,28 +3,44 @@ import {useSelector} from 'react-redux';
 import {
   removeItem,
   selectCart,
-  getProducts,
-  fetchProducts,
 } from '../features/cart/cartSlice';
+import {fetchMissingVariants} from '../features/variants/variantsSlice';
 import {useDispatch} from 'react-redux';
 
 
 const Cart = () => {
   const cart = useSelector(selectCart);
-  console.log(cart);
+  const variants = useSelector((state) => state.variants);
+  // console.log(cart);
   const dispatch = useDispatch();
   const handleRemove = (id) => {
     dispatch(removeItem(id));
   };
 
-  dispatch(fetchProducts());
+  const checkForItems = () => {
+    const missingIds = [];
+    Object.entries(cart).forEach(([id, _]) => {
+      if (variants[id] === undefined) {
+        missingIds.push(id);
+      }
+    });
+    if (missingIds.length) {
+      dispatch(fetchMissingVariants(missingIds));
+    }
+  };
 
-  console.log(cart);
+  React.useEffect(() => {
+    checkForItems();
+  }, [variants]);
+
+  // console.log(variants);
+  // console.log(cart);
   return (
     <div>
-      {Object.entries(cart).map((item) =>
-        <div key={item}>
-          <h1>{`${item[0]} cantidad ${item[1]}`}</h1>
+      {Object.entries(cart).map(([id, quantity]) =>
+        <div key={id}>
+          {variants[id] ? variants[id].title : 'no esta'}
+          <h1>{`${id} cantidad ${quantity}`}</h1>
         </div>,
       )}
     </div>
