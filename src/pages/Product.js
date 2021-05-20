@@ -7,6 +7,10 @@ import {addItem} from '../features/cart/cartSlice';
 import {fetchProduct, selectProduct} from '../features/products/productsSlice';
 import {useDispatch, useSelector} from 'react-redux';
 import Form from 'react-bootstrap/Form';
+import '../styles/product.css';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faChevronUp, faChevronDown} from '@fortawesome/free-solid-svg-icons';
+import Button from 'react-bootstrap/Button';
 
 const Product = () => {
   const [quantity, setQuantity] = React.useState(1);
@@ -26,7 +30,6 @@ const Product = () => {
     if (product) setSelectedVariant(product.variants[0].id);
   }, [product]);
 
-  console.log(selectedVariant);
   const addToCart = () => {
     dispatch(addItem({productId: selectedVariant, quantity: +quantity}));
   };
@@ -36,8 +39,18 @@ const Product = () => {
   };
 
   const handleQuantity = (e) => {
-    setQuantity(e.target.value);
+    setQuantity(+e.target.value);
   };
+
+  const handleIncreaseQuantity = () => {
+    setQuantity(quantity + 1);
+  };
+
+  const handleDecreaseQuantity = () => {
+    setQuantity(quantity - 1);
+  };
+
+  console.log(quantity);
 
   let content;
 
@@ -60,22 +73,43 @@ const Product = () => {
         </Row>
       </Col>
       <Col md={6}>
-        <Row>
-          <h1 className="text-center">{product.title}</h1>
-        </Row>
-        <Row>
-          <h2 className="text-center">{product.master_price}</h2>
-          <Form.Control as="select" onChange={handleSelected}>
-            {product.variants.map((item) => (
-              <option
-                key={item.id}
-                value={item.id}
-              >{item.size}</option>
-            ))}
-          </Form.Control>
-        </Row>
-        <button onClick={addToCart}>Añadir al carrito</button>
-        <input onChange={handleQuantity} value={quantity} type="number" />
+        <h1 className="text-center">{product.title}</h1>
+        <h2 className="text-center">{product.master_price}</h2>
+        <Form.Control as="select" onChange={handleSelected}>
+          {product.variants.map((item) => (
+            <option
+              key={item.id}
+              value={item.id}
+            >{item.size}</option>
+          ))}
+        </Form.Control>
+        <div className="d-flex flex-column mt-2">
+          <div className="product number-input mx-auto my-2">
+            <button
+              onClick={handleDecreaseQuantity}
+              className="minus"
+              type="button"
+            >
+              <FontAwesomeIcon icon={faChevronDown} />
+            </button>
+            <input
+              onChange={handleQuantity}
+              className="quantity"
+              type="number"
+              name="quantity"
+              min={1}
+              value={quantity}
+            />
+            <button
+              onClick={handleIncreaseQuantity}
+              className="plus"
+              type="button"
+            >
+              <FontAwesomeIcon icon={faChevronUp} />
+            </button>
+          </div>
+          <Button className="p-3" onClick={addToCart}>Añadir al carrito</Button>
+        </div>
       </Col>
     </Row>;
   }
