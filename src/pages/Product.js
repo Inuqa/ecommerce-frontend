@@ -47,7 +47,11 @@ const Product = () => {
   };
 
   const handleDecreaseQuantity = () => {
-    setQuantity(quantity - 1);
+    if (quantity === 1) {
+      setQuantity(1);
+    } else {
+      setQuantity(quantity - 1);
+    }
   };
 
   console.log(quantity);

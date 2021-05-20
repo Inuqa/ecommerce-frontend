@@ -20,7 +20,6 @@ const Cart = () => {
   const [total, setTotal] = React.useState(0);
   const cart = useSelector(selectCart);
   const variants = useSelector((state) => state.variants);
-  // console.log(cart);
   const dispatch = useDispatch();
 
 
@@ -48,9 +47,20 @@ const Cart = () => {
     setTotal(total);
   }, [variants, cart]);
 
+  const handleIncreaseQuantity = (e, id, quantity) => {
+    dispatch(updateQuantity({id, quantity: quantity + 1}));
+  };
+  const handleDecreaseQuantity = (e, id, quantity) => {
+    if (quantity === 1) {
+      dispatch(removeItem(id));
+    } else {
+      dispatch(updateQuantity({id, quantity: quantity - 1}));
+    }
+  };
+
   const handleOnBlur = (e, id) => {
     if (e.target.value === '') {
-      dispatch(updateQuantity(({id, quantity: 1})));
+      dispatch(updateQuantity({id, quantity: 1}));
     } else if (+e.target.value === 0) {
       dispatch(removeItem(id));
     }
@@ -87,12 +97,15 @@ const Cart = () => {
                   <td>
                     <div className="cart number-input mx-auto ">
                       <button
+                        onClick={(e) => handleDecreaseQuantity(e, id, quantity)}
                         className="minus"
                         type="button"
                       >
                         <FontAwesomeIcon icon={faChevronDown} />
                       </button>
                       <input
+                        onChange={(e) => handleQuantity(e, id)}
+                        onBlur={(e) => handleOnBlur(e, id)}
                         className="quantity"
                         type="number"
                         name="quantity"
@@ -100,6 +113,7 @@ const Cart = () => {
                         value={quantity}
                       />
                       <button
+                        onClick={(e) => handleIncreaseQuantity(e, id, quantity)}
                         className="plus"
                         type="button"
                       >
