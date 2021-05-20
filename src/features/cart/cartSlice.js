@@ -29,6 +29,7 @@ export const cartSlice = createSlice({
     },
     updateQuantity: (state, action) => {
       state[`${action.payload.id}`] = action.payload.quantity;
+      localStorage.setItem('cart', JSON.stringify(state));
     },
   },
 });
