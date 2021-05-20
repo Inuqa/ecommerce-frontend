@@ -11,6 +11,9 @@ import Spinner from 'react-bootstrap/Spinner';
 import Table from 'react-bootstrap/Table';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faChevronUp, faChevronDown} from '@fortawesome/free-solid-svg-icons';
+import '../styles/cart.css';
 
 
 const Cart = () => {
@@ -20,7 +23,12 @@ const Cart = () => {
   // console.log(cart);
   const dispatch = useDispatch();
 
-  const checkForItems = () => {
+
+  const handleQuantity = (e, id) => {
+    dispatch(updateQuantity(({id, quantity: e.target.value})));
+  };
+
+  React.useEffect(() => {
     const missingIds = [];
     Object.entries(cart).forEach(([id, _]) => {
       if (variants[id] === undefined) {
@@ -30,19 +38,8 @@ const Cart = () => {
     if (missingIds.length) {
       dispatch(fetchMissingVariants(missingIds));
     }
-  };
-
-  const handleQuantity = (e, id) => {
-    dispatch(updateQuantity(({id, quantity: e.target.value})));
-  };
-
-  React.useEffect(() => {
-    checkForItems();
-  }, [variants]);
-
-  React.useEffect(() => {
     let total = 0;
-    if (Object.keys(variants).length !== 0) {
+    if (Object.keys(variants).length !== 0 && missingIds.length === 0) {
       console.log(variants);
       Object.entries(cart).forEach(([id, quantity]) =>
         total += variants[id].price * quantity,
@@ -87,10 +84,29 @@ const Cart = () => {
                     <span className="ms-1">{variants[id].title}</span>
                   </td>
                   <td>{variants[id].price}</td>
-                  <td><input
-                    onChange={(e) => handleQuantity(e, id)}
-                    onBlur={(e) => handleOnBlur(e, id)}
-                    type="number" value={quantity}/></td>
+                  <td>
+                    <div className="cart number-input mx-auto ">
+                      <button
+                        className="minus"
+                        type="button"
+                      >
+                        <FontAwesomeIcon icon={faChevronDown} />
+                      </button>
+                      <input
+                        className="quantity"
+                        type="number"
+                        name="quantity"
+                        min={1}
+                        value={quantity}
+                      />
+                      <button
+                        className="plus"
+                        type="button"
+                      >
+                        <FontAwesomeIcon icon={faChevronUp} />
+                      </button>
+                    </div>
+                  </td>
                   <td>{+variants[id].price * quantity}</td>
                 </tr>) :
               (<tr key={id}>
