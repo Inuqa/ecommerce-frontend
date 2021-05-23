@@ -2,20 +2,21 @@ import React from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import axios from 'axios';
-import {Link} from 'react-router-dom';
+import {Link, useLocation} from 'react-router-dom';
 import Spinner from 'react-bootstrap/Spinner';
 import Pagination from '../components/Pagination';
-import useQuery from '../hooks/useQuery';
 
 const Product = () => {
   const [products, setProducts] = React.useState([]);
   const [isLoading, setIsloading] = React.useState(false);
-  const [offset] = React.useState(useQuery().get('offset'));
   const [totalPages, setTotalPages] = React.useState(1);
+
+  const queryString = useLocation().search;
 
   const getProducts = () => {
     setIsloading(true);
-    axios.get(`http://localhost:2000/products${offset ? `?offset=${offset}`: '' }`)
+    axios.get(
+        `http://localhost:2000/products${queryString ? queryString : '' }`)
         .then((res) => {
           setProducts(res.data.products);
           setTotalPages(res.data.total_count);
@@ -25,7 +26,7 @@ const Product = () => {
 
   React.useEffect(() => {
     getProducts();
-  }, []);
+  }, [queryString]);
 
   const renderArr = products.map((item) => (
     <Col key={item.id} md={3}>
@@ -56,9 +57,8 @@ const Product = () => {
     <Row className="mt-5">
       {renderArr}
       <Pagination
-        url={'http://localhost:3000/products'}
+        url={'/products?'}
         pages={totalPages}
-        offset={offset}
       />
     </Row>
   );
