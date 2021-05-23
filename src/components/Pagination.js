@@ -1,19 +1,22 @@
 import React from 'react';
 import Paginate from 'react-bootstrap/Pagination';
+import {Link} from 'react-router-dom';
+import useQuery from '../hooks/useQuery';
 
-const Pagination = ({pages = 1, url, offset}) => {
+const Pagination = ({pages = 1, url, limit = 8}) => {
+  const offset = useQuery().get('offset');
   const items = [];
   for (let i = 1; i<=pages; i++) {
     items.push(
         <li
-          className={`page-item ${(i - 1) * 8 === +offset ? 'active': ''}`}
+          className={`page-item ${(i - 1) * limit === +offset ? 'active': ''}`}
           key={i}
         >
-          <a
-            href={`${url}?offset=${8 * (i - 1)}`}
+          <Link
+            to={`${url}offset=${limit * (i - 1)}`}
             className="page-link">
             {i}
-          </a>
+          </Link>
         </li>,
     );
   }
@@ -22,22 +25,23 @@ const Pagination = ({pages = 1, url, offset}) => {
       <li
         className={`page-item ${+offset === 0 ? 'disabled' : ''}`}
       >
-        <a
-          href={`${url}?offset=${offset - 8}`}
+        <Link
+          to={`${url}offset=${+offset - limit}`}
           className="page-link"
         >
           &lt;
-        </a></li>
+        </Link></li>
       {items}
       <li
-        className={`page-item ${+offset === (pages - 1) * 8 ? 'disabled' : ''}`}
+        className={
+          `page-item ${+offset === (pages - 1) * limit ? 'disabled' : ''}`}
       >
-        <a
-          href={`${url}?offset=${+offset + 8}`}
+        <Link
+          to={`${url}offset=${+offset + limit}`}
           className="page-link"
         >
           {'>'}
-        </a></li>
+        </Link></li>
     </Paginate>
   );
 };
