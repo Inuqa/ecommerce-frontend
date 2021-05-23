@@ -3,10 +3,12 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
+  useLocation,
 } from 'react-router-dom';
 import Header from './components/Header';
 import Product from './pages/Product';
 import Products from './pages/Products';
+import ProductIndex from './pages/admin/ProductIndex';
 import Home from './pages/Home';
 import Cart from './pages/Cart';
 import Container from 'react-bootstrap/Container';
@@ -33,6 +35,9 @@ function App() {
           </Route>
           <Route exact path="/cart">
             <Cart />
+          </Route>
+          <Route exact path="/admin/products">
+            <ProductIndex />
           </Route>
           <Route path="/">
             <Home />
