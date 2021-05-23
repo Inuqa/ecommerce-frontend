@@ -6,7 +6,17 @@ const useParams = (params) => {
     });
     return str.join('&');
   };
-  return serialize(params);
+
+  const removeOffset = (params) => {
+    const str = [];
+    Object.entries(params).forEach(([key, val]) => {
+      str.push(encodeURIComponent(key) + '=' + encodeURIComponent(val));
+    });
+    str.pop();
+    return str.join('&');
+    return str;
+  };
+  return {url: serialize(params), urlNoOffset: removeOffset(params)};
 };
 
 export default useParams;
