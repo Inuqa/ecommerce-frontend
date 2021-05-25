@@ -1,7 +1,13 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
+import axios from 'axios';
 import '../styles/adminHeader.css';
 
 const AdminHeader = () => {
+  const handleDisconect = (e) => {
+    axios.delete('http://localhost:2000/logout', {withCredentials: true})
+        .then((res) => console.log(res));
+  };
   return (
     <div className="admin-nav">
       <header className="admin-nav-header">
@@ -11,21 +17,44 @@ const AdminHeader = () => {
         <nav className="admin-nav-menu">
           <ul className="nav flex-column">
             <li className="nav-item">
-              <a className="nav-link active" href="#">Ordenes</a>
+              <Link to="/admin/orders"
+                className="nav-link active"
+              >
+                Ordenes
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">Productos</a>
+              <Link
+                to="/admin/products"
+                className="nav-link"
+              >
+              Productos
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">Stock</a>
+              <Link
+                to="#"className="nav-link"
+              >
+              Stock
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">Slider</a>
+              <Link to="#" className="nav-link"
+              >
+                Slider
+              </Link>
             </li>
           </ul>
         </nav>
       </div>
       <div className="admin-nav-footer">
+        <ul className="nav flex-column">
+          <li>
+            <button onClick={handleDisconect}>
+              Desconectar
+            </button>
+          </li>
+        </ul>
       </div>
     </div>
   );

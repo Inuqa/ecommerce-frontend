@@ -9,7 +9,6 @@ import AdminHeader from './AdminHeader';
 
 const Header = () => {
   const location = useLocation();
-  console.log(location);
   if (location.pathname.includes('/admin')) {
     return (
       <AdminHeader />
@@ -21,7 +20,7 @@ const Header = () => {
           <Nav.Item>
             <Link className="nav-link" to="/"
             >
-        Home
+        Inicio
             </Link>
           </Nav.Item>
           <Nav.Item>
