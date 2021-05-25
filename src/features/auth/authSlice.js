@@ -15,9 +15,15 @@ export const authLogin = createAsyncThunk(
 
 export const authLogout = createAsyncThunk(
     'auth/logout', async () => {
-      console.log('asd');
       const res = await axios.delete(`http://localhost:2000/logout`, {withCredentials: true});
-      console.log(res);
+      return res.data;
+    },
+);
+
+export const authAutoLogin = createAsyncThunk(
+    'auth/auto_login', async () => {
+      const res = await axios.get(`http://localhost:2000/logged_in`, {withCredentials: true});
+      return res.data;
     },
 );
 
@@ -28,7 +34,6 @@ export const authSlice = createSlice({
   },
   extraReducers: {
     [authLogin.fulfilled]: (state, action) => {
-      console.log(action);
       if (action.payload.logged_in === true) {
         state.loggedIn = true;
         state.user = action.payload.user;
@@ -37,6 +42,12 @@ export const authSlice = createSlice({
     [authLogout.fulfilled]: (state, action) => {
       state.loggedIn = false;
       state.user = null;
+    },
+    [authAutoLogin.fulfilled]: (state, action) => {
+      if (action.payload.logged_in === true) {
+        state.loggedIn = true;
+        state.user = action.payload.user;
+      }
     },
   },
 });
