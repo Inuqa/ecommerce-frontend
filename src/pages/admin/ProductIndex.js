@@ -15,9 +15,13 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
 const ProductIndex = () => {
   const [products, setProducts] = React.useState([]);
-  const [title, setTitle] = React.useState(decodeURIComponent(useQuery().get('title')));
-  const [showDeleted, setShowDeleted] = React.useState(JSON.parse(useQuery().get('show_deleted')));
-  const [offset] = React.useState(useQuery().get('offset'));
+  const [title, setTitle] = React.useState(
+    useQuery().get('title') ?
+    decodeURIComponent(useQuery().get('title')) : '',
+  );
+  const [showDeleted, setShowDeleted] = React.useState(
+      JSON.parse(useQuery().get('show_deleted')) || false);
+  const [offset] = React.useState(useQuery().get('offset') || 0);
   const [totalPages, setTotalPages] = React.useState(1);
   const [loading, setLoading] = React.useState(false);
   const {url, urlNoOffset} = useParams(
@@ -29,8 +33,6 @@ const ProductIndex = () => {
       },
   );
 
-  console.log(title);
-
   const queryString = useLocation().search;
   const history = useHistory();
 
@@ -41,14 +43,15 @@ const ProductIndex = () => {
 
   React.useEffect(() => {
     setLoading(true);
-    axios.get(`http://localhost:2000/admin/products${queryString ? queryString : ''}`)
+    axios.get(`http://localhost:2000/admin/products${queryString ? queryString : ''}`,
+        {withCredentials: true})
         .then((res) => {
           setProducts(res.data.products);
           setTotalPages(res.data.total_count);
           setLoading(false);
-        });
+        })
+        .catch((error) => console.error(error));
   }, [queryString]);
-  console.log(products);
 
   const handleTitle = (e) => {
     setTitle(e.target.value);
@@ -85,7 +88,7 @@ const ProductIndex = () => {
       <div className="admin-content-wrapper">
         <fieldset>
           <legend align="center">Buscar</legend>
-          <form onSubmit={handleQuery} className="d-flex flex-column">
+          <form onSubmit={handleQuery}>
             <label className="form-label" htmlFor="name">
               Titulo
             </label>
