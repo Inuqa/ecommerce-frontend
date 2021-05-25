@@ -3,14 +3,15 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  useLocation,
 } from 'react-router-dom';
 import Header from './components/Header';
 import Product from './pages/Product';
+import Login from './pages/admin/Login';
 import Products from './pages/Products';
 import ProductIndex from './pages/admin/ProductIndex';
 import Home from './pages/Home';
 import Cart from './pages/Cart';
+import OrdersIndex from './pages/admin/OrdersIndex';
 import Container from 'react-bootstrap/Container';
 import './App.css';
 import {useDispatch} from 'react-redux';
@@ -38,6 +39,12 @@ function App() {
           </Route>
           <Route exact path="/admin/products">
             <ProductIndex />
+          </Route>
+          <Route exact path="/admin/orders">
+            <OrdersIndex />
+          </Route>
+          <Route exact path="/admin/login">
+            <Login />
           </Route>
           <Route path="/">
             <Home />
