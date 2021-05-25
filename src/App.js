@@ -42,12 +42,12 @@ function App() {
           <Route exact path="/cart">
             <Cart />
           </Route>
-          <Route exact path="/admin/products">
+          <PrivateRoute exact path="/admin/products">
             <ProductIndex />
-          </Route>
-          <Route exact path="/admin/orders">
+          </PrivateRoute>
+          <PrivateRoute exact path="/admin/orders">
             <OrdersIndex />
-          </Route>
+          </PrivateRoute>
           <Route exact path="/admin/login">
             <Login />
           </Route>
