@@ -1,12 +1,27 @@
 import React from 'react';
 import {authLogin} from '../../features/auth/authSlice';
 import {useDispatch, useSelector} from 'react-redux';
+import {useHistory, useLocation} from 'react-router-dom';
 
 const Login = () => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
 
+  const location = useLocation();
+  const history = useHistory();
   const dispatch = useDispatch();
+  const loggedIn = useSelector((state) => state.auth.loggedIn);
+
+  React.useEffect(() => {
+    console.log(location.pathname);
+    if (loggedIn) {
+      if (location.pathname.includes('/admin') && !location.state.from.pathname.includes('login')) {
+        history.push(location.state.from.pathname);
+      } else {
+        history.push('/admin/orders');
+      }
+    }
+  }, [loggedIn]);
 
   const handleEmail = (e) => {
     setEmail(e.target.value);
