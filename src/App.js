@@ -13,14 +13,19 @@ import Home from './pages/Home';
 import Cart from './pages/Cart';
 import OrdersIndex from './pages/admin/OrdersIndex';
 import Container from 'react-bootstrap/Container';
-import './App.css';
 import {useDispatch} from 'react-redux';
 import {loadCart} from './features/cart/cartSlice';
+import {authAutoLogin} from './features/auth/authSlice';
+import PrivateRoute from './components/PrivateRoute';
+import './App.css';
 
 function App() {
   const dispatch = useDispatch();
 
-  dispatch(loadCart());
+  React.useEffect(() => {
+    dispatch(loadCart());
+    dispatch(authAutoLogin());
+  }, []);
   return (
     <Router>
       <Container>
