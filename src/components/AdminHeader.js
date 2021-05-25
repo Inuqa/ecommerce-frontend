@@ -1,13 +1,16 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import {authLogout} from './../features/auth/authSlice';
+import {useDispatch, useSelector} from 'react-redux';
 import axios from 'axios';
 import '../styles/adminHeader.css';
 
 const AdminHeader = () => {
+  const dispatch = useDispatch();
   const handleDisconect = (e) => {
-    axios.delete('http://localhost:2000/logout', {withCredentials: true})
-        .then((res) => console.log(res));
+    dispatch(authLogout());
   };
+
   return (
     <div className="admin-nav">
       <header className="admin-nav-header">

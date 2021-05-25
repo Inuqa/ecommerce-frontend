@@ -1,9 +1,12 @@
 import React from 'react';
-import axios from 'axios';
+import {authLogin} from '../../features/auth/authSlice';
+import {useDispatch, useSelector} from 'react-redux';
 
 const Login = () => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+
+  const dispatch = useDispatch();
 
   const handleEmail = (e) => {
     setEmail(e.target.value);
@@ -15,11 +18,7 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('http://localhost:2000/login',
-        {admin: {email, password}},
-        {withCredentials: true})
-        .then((res) => console.log(res))
-        .catch((error) => console.log(error));
+    dispatch(authLogin({admin: {email, password}}));
   };
 
   return (
