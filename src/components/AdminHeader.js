@@ -2,14 +2,26 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import {authLogout} from './../features/auth/authSlice';
 import {useDispatch, useSelector} from 'react-redux';
-import axios from 'axios';
 import '../styles/adminHeader.css';
+import ContentHeader from './ContentHeader';
 
 const AdminHeader = () => {
   const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth);
+
   const handleDisconect = (e) => {
     dispatch(authLogout());
   };
+
+  if (!auth.user) {
+    return (
+      <>
+        <ContentHeader title={'Acceder'}/>
+        <div className="admin-nav">
+        </div>
+      </>
+    );
+  }
 
   return (
     <div className="admin-nav">
