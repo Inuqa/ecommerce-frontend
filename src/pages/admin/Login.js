@@ -10,16 +10,12 @@ const Login = () => {
   const location = useLocation();
   const history = useHistory();
   const dispatch = useDispatch();
-  const loggedIn = useSelector((state) => state.auth.loggedIn);
+  const loggedIn = useSelector((state) => state.auth.user);
 
   React.useEffect(() => {
     console.log(location.pathname);
     if (loggedIn) {
-      if (location.pathname.includes('/admin') && !location.state.from.pathname.includes('login')) {
-        history.push(location.state.from.pathname);
-      } else {
-        history.push('/admin/orders');
-      }
+      history.push('/admin/orders');
     }
   }, [loggedIn]);
 
