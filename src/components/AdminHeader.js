@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import {Link, useHistory} from 'react-router-dom';
 import {authLogout} from './../features/auth/authSlice';
 import {useDispatch, useSelector} from 'react-redux';
 import '../styles/adminHeader.css';
@@ -8,9 +8,11 @@ import ContentHeader from './ContentHeader';
 const AdminHeader = () => {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
+  const history = useHistory();
 
   const handleDisconect = (e) => {
     dispatch(authLogout());
+    history.push('/admin/login');
   };
 
   if (!auth.user) {
