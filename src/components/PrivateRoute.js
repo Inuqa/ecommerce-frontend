@@ -4,13 +4,27 @@ import {
   Redirect,
   Route,
 } from 'react-router-dom';
+import Spinner from 'react-bootstrap/Spinner';
+
 const PrivateRoute = ({children, ...rest}) => {
   const auth = useSelector((state) => state.auth);
+  console.log(auth);
+
+  if (auth.user === undefined) {
+    console.log(auth.user, 'private');
+    return <Spinner
+      style={{position: 'absolute', top: '50%', left: '50%'}}
+      className="loading-spinner"
+      animation="border"
+      variant="primary"
+    />;
+  }
+
   return (
     <Route
       {...rest}
       render={({location}) =>
-      auth.loggedIn ? (
+      auth.user ? (
       children
       ) : (
       <Redirect to={
