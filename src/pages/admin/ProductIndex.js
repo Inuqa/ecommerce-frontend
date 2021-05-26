@@ -16,8 +16,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 const ProductIndex = () => {
   const [products, setProducts] = React.useState([]);
   const [title, setTitle] = React.useState(
-    useQuery().get('title') ?
-    decodeURIComponent(useQuery().get('title')) : '',
+      decodeURIComponent(useQuery().get('title') || ''),
   );
   const [showDeleted, setShowDeleted] = React.useState(
       JSON.parse(useQuery().get('show_deleted')) || false);
@@ -38,6 +37,7 @@ const ProductIndex = () => {
 
   const handleQuery = (e) => {
     e.preventDefault();
+    console.log(url);
     history.push(`/admin/products?${url}`);
   };
 
