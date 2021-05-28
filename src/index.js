@@ -7,6 +7,10 @@ import {Provider} from 'react-redux';
 import * as serviceWorker from './serviceWorker';
 import 'bootswatch/dist/flatly/bootstrap.min.css';
 
+require('dotenv').config();
+console.log(process.env);
+
+
 ReactDOM.render(
     <React.StrictMode>
       <Provider store={store}>
