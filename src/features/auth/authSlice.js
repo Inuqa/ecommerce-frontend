@@ -7,21 +7,28 @@ const initialState = {
 
 export const authLogin = createAsyncThunk(
     'auth/login', async (userParams) => {
-      const res = await axios.post(`http://localhost:2000/api/login`, userParams, {withCredentials: true});
+      const res = await axios.post(
+          process.env.REACT_APP_BASE_API_URL + `/api/login`,
+          userParams,
+          {withCredentials: true});
       return res.data;
     },
 );
 
 export const authLogout = createAsyncThunk(
     'auth/logout', async () => {
-      const res = await axios.delete(`http://localhost:2000/api/logout`, {withCredentials: true});
+      const res = await axios.delete(
+          process.env.REACT_APP_BASE_API_URL + `/api/logout`,
+          {withCredentials: true});
       return res.data;
     },
 );
 
 export const authAutoLogin = createAsyncThunk(
     'auth/auto_login', async () => {
-      const res = await axios.get(`http://localhost:2000/api/current_user`, {withCredentials: true});
+      const res = await axios.get(
+          process.env.REACT_APP_BASE_API_URL + `/api/current_user`,
+          {withCredentials: true});
       return res.data;
     },
 );

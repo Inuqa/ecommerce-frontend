@@ -10,7 +10,8 @@ export const fetchMissingVariants = createAsyncThunk(
       ids.forEach((item) => {
         query += `ids[]=${item}&`;
       });
-      const res = await axios.get(`http://localhost:2000/api/variants?${query}`);
+      const res = await axios.get(
+          process.env.REACT_APP_BASE_API_URL + `/api/variants?${query}`);
       return res.data;
     },
 );

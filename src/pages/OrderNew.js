@@ -20,7 +20,7 @@ const OrderNew = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('http://localhost:2000/api/orders', {
+    axios.post(process.env.REACT_APP_BASE_API_URL + '/api/orders', {
       order: {
         name: values.name,
         last_name: values.last_name,
@@ -32,6 +32,7 @@ const OrderNew = () => {
       email: values.email,
       cart,
     },
+    {withCredentials: true},
     ).then((res) => setForm(res.data));
   };
 

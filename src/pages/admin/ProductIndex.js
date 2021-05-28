@@ -43,7 +43,9 @@ const ProductIndex = () => {
 
   React.useEffect(() => {
     setLoading(true);
-    axios.get(`http://localhost:2000/admin/products${queryString ? queryString : ''}`,
+    axios.get(
+        process.env.REACT_APP_BASE_API_URL +
+      `/api/admin/products${queryString ? queryString : ''}`,
         {withCredentials: true})
         .then((res) => {
           setProducts(res.data.products);

@@ -30,7 +30,9 @@ const OrdersIndex = () => {
 
   React.useEffect(() => {
     setLoading(true);
-    axios.get(`http://localhost:2000/admin/orders${queryString ? queryString : ''}`,
+    axios.get(
+        process.env.REACT_APP_BASE_API_URL +
+      `/api/admin/orders${queryString ? queryString : ''}`,
         {withCredentials: true},
     )
         .then((res) => {
