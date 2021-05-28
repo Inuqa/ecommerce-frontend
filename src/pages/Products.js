@@ -16,13 +16,16 @@ const Product = () => {
   const getProducts = () => {
     setIsloading(true);
     axios.get(
-        `http://localhost:2000/products${queryString ? queryString : '' }`)
+        `http://localhost:2000/api/products${queryString ? queryString : '' }`, {withCredentials: true})
         .then((res) => {
           setProducts(res.data.products);
           setTotalPages(res.data.total_count);
-        })
+        },
+        )
         .then(() => setIsloading(false));
   };
+
+  console.log(products);
 
   React.useEffect(() => {
     getProducts();

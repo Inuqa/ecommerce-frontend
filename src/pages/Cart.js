@@ -5,6 +5,9 @@ import {
   selectCart,
   updateQuantity,
 } from '../features/cart/cartSlice';
+import {
+  Link,
+} from 'react-router-dom';
 import {fetchMissingVariants} from '../features/variants/variantsSlice';
 import {useDispatch} from 'react-redux';
 import Spinner from 'react-bootstrap/Spinner';
@@ -144,6 +147,7 @@ const Cart = () => {
             <h3>
             Subtotal: {total}
             </h3>
+            <Link className="btn btn-primary" to='/order/new' >Comprar</Link>
           </div>
         </Col>
       </Row>
