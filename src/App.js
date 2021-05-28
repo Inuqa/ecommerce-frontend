@@ -11,6 +11,7 @@ import Products from './pages/Products';
 import ProductIndex from './pages/admin/ProductIndex';
 import Home from './pages/Home';
 import Cart from './pages/Cart';
+import OrderNew from './pages/OrderNew';
 import OrdersIndex from './pages/admin/OrdersIndex';
 import Container from 'react-bootstrap/Container';
 import {useDispatch} from 'react-redux';
@@ -41,6 +42,9 @@ function App() {
           </Route>
           <Route exact path="/cart">
             <Cart />
+          </Route>
+          <Route exact path="/order/new">
+            <OrderNew />
           </Route>
           <PrivateRoute exact path="/admin/products">
             <ProductIndex />
