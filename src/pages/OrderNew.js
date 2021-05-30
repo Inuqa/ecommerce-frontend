@@ -35,13 +35,42 @@ const OrderNew = () => {
     {withCredentials: true},
     ).then((res) => setForm(res.data));
   };
-
-  if (form) {
+  console.log(form);
+  if (form.res) {
     return (
-      <form action={form.url} method="post">
-        <input type="hidden" name="token_ws" value={form.token} />
-        <input type="submit" />
-      </form>
+      <>
+        <div className="card">
+          <div className="card-header">
+            Resumen de la orden
+          </div>
+          <div className="card-body">
+            <div
+              className="card-text"
+            >
+              Numero de la orden: {form.order.id}
+            </div>
+            <div
+              className="card-text"
+            >
+              total a pagar:
+            </div>
+          </div>
+        </div>
+        <form
+          action={form.res.url}
+          method="post">
+          <input
+            type="hidden"
+            name="token_ws"
+            value={form.res.token}
+          />
+          <input
+            type="submit"
+            value="Ir a webpay"
+            className="btn btn-primary"
+          />
+        </form>
+      </>
     );
   }
 
