@@ -6,8 +6,16 @@ const useForm = (props) => {
   const handleChange = (e) => {
     const {name, value} = e.target;
 
+    let val;
+
+    if (name === 'image') {
+      val = e.target.files[0];
+    } else {
+      val = value;
+    }
+
     setValues({...values,
-      [name]: value});
+      [name]: val});
   };
   return {handleChange, values};
 };
