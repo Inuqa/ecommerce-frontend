@@ -86,7 +86,11 @@ const ProductIndex = () => {
 
   return (
     <>
-      <ContentHeader title={'Productos'}/>
+      <ContentHeader
+        title={'Productos'}
+        btn="/admin/products/new"
+        btnVal={'Crear producto'}
+      />
       <div className="admin-content-wrapper">
         <fieldset>
           <legend align="center">Buscar</legend>
