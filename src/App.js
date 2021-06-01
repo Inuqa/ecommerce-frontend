@@ -3,6 +3,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
+  Redirect,
 } from 'react-router-dom';
 import Header from './components/Header';
 import Product from './pages/Product';
@@ -14,7 +15,9 @@ import Cart from './pages/Cart';
 import OrderNew from './pages/OrderNew';
 import OrdersIndex from './pages/admin/OrdersIndex';
 import ProductsCreate from './pages/admin/ProductsCreate';
+import ProductsEdit from './pages/admin/ProductsEdit';
 import VariantsCreate from './pages/admin/VariantsCreate';
+import VariantsEdit from './pages/admin/VariantsEdit';
 import AfterTransaction from './pages/AfterTransaction';
 import Container from 'react-bootstrap/Container';
 import {useDispatch} from 'react-redux';
@@ -49,14 +52,26 @@ function App() {
           <Route exact path="/order/new">
             <OrderNew />
           </Route>
+          <PrivateRoute exact path="/admin">
+            <Redirect to="/admin/orders" />
+          </PrivateRoute>
           <PrivateRoute exact path="/admin/products">
             <ProductIndex />
           </PrivateRoute>
           <PrivateRoute exact path="/admin/products/new">
             <ProductsCreate />
           </PrivateRoute>
+          <PrivateRoute exact path="/admin/products/:id/edit">
+            <ProductsEdit />
+          </PrivateRoute>
           <PrivateRoute exact path="/admin/products/:id/variants/new">
             <VariantsCreate />
+          </PrivateRoute>
+          <PrivateRoute
+            exact
+            path="/admin/products/:productId/variants/:id/edit"
+          >
+            <VariantsEdit />
           </PrivateRoute>
           <PrivateRoute exact path="/admin/orders">
             <OrdersIndex />
