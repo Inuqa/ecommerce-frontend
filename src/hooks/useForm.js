@@ -17,7 +17,7 @@ const useForm = (props) => {
     setValues({...values,
       [name]: val});
   };
-  return {handleChange, values};
+  return {handleChange, values, setValues};
 };
 
 export default useForm;
