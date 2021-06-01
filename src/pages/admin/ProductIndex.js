@@ -5,7 +5,7 @@ import {Link, useLocation, useHistory} from 'react-router-dom';
 import useParams from '../../hooks/useParams';
 import useQuery from '../../hooks/useQuery';
 import Pagination from '../../components/Pagination';
-import axios from 'axios';
+import useProducts from '../../hooks/useProducts';
 import {
   faEdit,
   faTrash,
@@ -18,6 +18,7 @@ const ProductIndex = () => {
   const [title, setTitle] = React.useState(
       decodeURIComponent(useQuery().get('title') || ''),
   );
+
   const [showDeleted, setShowDeleted] = React.useState(
       JSON.parse(useQuery().get('show_deleted')) || false);
   const [offset] = React.useState(useQuery().get('offset') || 0);
@@ -32,6 +33,9 @@ const ProductIndex = () => {
       },
   );
 
+  const {search, restore, remove} = useProducts();
+
+
   const queryString = useLocation().search;
   const history = useHistory();
 
@@ -42,17 +46,7 @@ const ProductIndex = () => {
   };
 
   React.useEffect(() => {
-    setLoading(true);
-    axios.get(
-        process.env.REACT_APP_BASE_API_URL +
-      `/api/admin/products${queryString ? queryString : ''}`,
-        {withCredentials: true})
-        .then((res) => {
-          setProducts(res.data.products);
-          setTotalPages(res.data.total_count);
-          setLoading(false);
-        })
-        .catch((error) => console.error(error));
+    doSearch();
   }, [queryString]);
 
   const handleTitle = (e) => {
@@ -63,6 +57,26 @@ const ProductIndex = () => {
     setShowDeleted(!showDeleted);
   };
 
+  const doSearch = () => {
+    setLoading(true);
+    search(queryString)
+        .then((res) => {
+          setProducts(res.data.products);
+          setTotalPages(res.data.total_count);
+          setLoading(false);
+        }).catch((error) => console.log(error));
+  };
+
+  const handleRestore = (id) => {
+    restore(id)
+        .then(() => doSearch());
+  };
+
+  const handleRemove = (id) => {
+    remove(id)
+        .then(() => doSearch());
+  };
+
   const renderProducts = products.map((item) =>
     <tr key={item.id}>
       <td>{item.id}</td>
@@ -70,15 +84,25 @@ const ProductIndex = () => {
       <td>{item.title}</td>
       <td>{item.price}</td>
       <td>
-        <Link to="#"><FontAwesomeIcon icon={faEdit} /></Link>
+        <Link
+          to={`/admin/products/${item.id}/edit`}
+        >
+          <FontAwesomeIcon icon={faEdit} />
+        </Link>
         {
           item.discarded_at ?
-          <Link to="#">
-            <FontAwesomeIcon icon={faTrashRestore} />
-          </Link> :
-        <Link to="#">
-          <FontAwesomeIcon icon={faTrash} />
-        </Link>
+            <span
+              style={{cursor: 'pointer'}}
+              onClick={() => handleRestore(item.id)}
+            >
+              <FontAwesomeIcon icon={faTrashRestore} />
+            </span> :
+            <span
+              style={{cursor: 'pointer'}}
+              onClick={() => handleRemove(item.id)}
+            >
+              <FontAwesomeIcon icon={faTrash} />
+            </span>
         }
       </td>
     </tr>,
