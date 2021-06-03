@@ -25,6 +25,8 @@ const OrdersIndex = () => {
       },
   );
 
+  console.log(orders);
+
   const queryString = useLocation().search;
   const history = useHistory();
 
@@ -64,7 +66,7 @@ const OrdersIndex = () => {
       <td>{item.id}</td>
       <td>{item.status}</td>
       <td>{item.email}</td>
-      <td>{item.total}</td>
+      <td>{item.amount}</td>
     </tr>,
   );
 
