@@ -69,9 +69,6 @@ const Cart = () => {
     }
   };
 
-  console.log(variants);
-  // console.log(variants);
-  // console.log(cart);
   return (
     <>
       <Row>
@@ -147,7 +144,12 @@ const Cart = () => {
             <h3>
             Subtotal: {total}
             </h3>
-            <Link className="btn btn-primary" to='/order/new' >Comprar</Link>
+            <Link
+              className="btn btn-primary"
+              to='/order/new?step=information'
+            >
+            Comprar
+            </Link>
           </div>
         </Col>
       </Row>
