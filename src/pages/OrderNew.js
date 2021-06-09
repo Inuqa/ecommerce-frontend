@@ -2,24 +2,63 @@ import React from 'react';
 import axios from 'axios';
 import useForm from '../hooks/useForm';
 import {useSelector} from 'react-redux';
+import useQuery from '../hooks/useQuery';
+import useValidations from '../hooks/useValidations';
+import OrderInformation from '../components/OrderInformation';
+import OrderShipping from '../components/OrderShipping';
+import OrderPayMethod from '../components/OrderPayMethod';
+import WebpayForm from '../components/WebpayForm';
+import {useHistory} from 'react-router-dom';
+import OrderNewBreadscrumb from '../components/OrderNewBreadscrumb';
+import '../styles/order.css';
+
+const STEPS = {
+  information: 'information',
+  shipping: 'shipping',
+  pay_method: 'pay-method',
+};
+
 
 const OrderNew = () => {
   const {handleChange, values} = useForm({
-    email: '',
-    name: '',
-    last_name: '',
-    address: '',
-    city: '',
-    comuna: '',
-    phone: '',
+    'email': '',
+    'name': '',
+    'last_name': '',
+    'address': '',
+    'city': '',
+    'comuna': '',
+    'phone': '',
+    'pay-method': '',
+    'shipping-method': '',
   });
 
+  const [breadcrumbs, setBreadscrumb] = React.useState({
+    'information': ['Informacion', true],
+    'shipping': ['Envio', false],
+    'pay-method': ['Pago', false],
+  });
+  const [step, setStep] = React.useState(
+      useQuery().get('step') || 'information',
+  );
+
   const [form, setForm] = React.useState(false);
+  const [errors, setErrors] = React.useState({});
+  const {handleInformationValidations} = useValidations();
 
   const cart = useSelector((state) => state.cart);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const queryStep = useQuery().get('step');
+  const history = useHistory();
+
+  React.useEffect(() => {
+    if (!queryStep) {
+      setStep('information');
+    } else {
+      setStep(queryStep);
+    }
+  }, [queryStep]);
+
+  const handleSubmit = () => {
     axios.post(process.env.REACT_APP_BASE_API_URL + '/api/orders', {
       order: {
         name: values.name,
@@ -35,148 +74,63 @@ const OrderNew = () => {
     {withCredentials: true},
     ).then((res) => setForm(res.data));
   };
-  console.log(form);
+
+  const handleStepPayment = () => {
+    history.push(`/order/new?step=${STEPS.pay_method}`);
+    setBreadscrumb({
+      'information': ['Informacion', true],
+      'shipping': ['Envio', true],
+      'pay-method': ['Pago', true],
+    });
+  };
+
+  const handleStepInformation = () => {
+    history.push(`/order/new?step=${STEPS.shipping}`);
+    setBreadscrumb({
+      'information': ['Informacion', true],
+      'shipping': ['Envio', true],
+      'pay-method': ['Pago', false],
+    });
+  };
+
+  const steps = {
+    [STEPS.information]: <OrderInformation
+      handleChange={handleChange}
+      values={values}
+      handleStepInformation={handleStepInformation}
+      handleValidations={handleInformationValidations}
+      setErrors={setErrors}
+      errors={errors}
+    />,
+    [STEPS.shipping]: <OrderShipping
+      handleChange={handleChange}
+      values={values}
+      handleStepPayment={handleStepPayment}
+      setErrors={setErrors}
+      errors={errors}
+    />,
+    [STEPS.pay_method]: <OrderPayMethod
+      handleChange={handleChange}
+      values={values}
+      handleSubmit={handleSubmit}
+      setErrors={setErrors}
+      errors={errors}
+    />,
+  };
+
   if (form.res) {
     return (
-      <>
-        <div className="card">
-          <div className="card-header">
-            Resumen de la orden
-          </div>
-          <div className="card-body">
-            <div
-              className="card-text"
-            >
-              Numero de la orden: {form.order.id}
-            </div>
-            <div
-              className="card-text"
-            >
-              total a pagar:
-            </div>
-          </div>
-        </div>
-        <form
-          action={form.res.url}
-          method="post">
-          <input
-            type="hidden"
-            name="token_ws"
-            value={form.res.token}
-          />
-          <input
-            type="submit"
-            value="Ir a webpay"
-            className="btn btn-primary"
-          />
-        </form>
-      </>
+      <WebpayForm form={form} />
     );
   }
 
   return (
     <>
-      <h1>Crear order</h1>
-      <fieldset>
-        <form onSubmit={handleSubmit}>
-          <label
-            className="form-label"
-            htmlFor="email"
-          >
-            Email
-          </label>
-          <input
-            name="email"
-            value={values.email}
-            onChange={handleChange}
-            className="form-control"
-            type="text"
-            id="email"
-          />
-          <label
-            className="form-label"
-            htmlFor="name"
-          >
-            Nombre
-          </label>
-          <input
-            name="name"
-            value={values.name}
-            onChange={handleChange}
-            className="form-control"
-            type="text"
-            id="name"
-          />
-          <label
-            className="form-label"
-            htmlFor="last_name"
-          >
-            Apellido
-          </label>
-          <input
-            name="last_name"
-            value={values.last_name}
-            onChange={handleChange}
-            className="form-control" type="text" id="last_name"/>
-          <label
-            className="form-label"
-            htmlFor="address"
-          >
-            Direccion
-          </label>
-          <input
-            name="address"
-            value={values.address}
-            onChange={handleChange}
-            className="form-control"
-            type="text"
-            id="address"/>
-          <label
-            className="form-label"
-            htmlFor="city"
-          >
-            Ciudad
-          </label>
-          <input
-            name="city"
-            value={values.city}
-            onChange={handleChange}
-            className="form-control"
-            type="text"
-            id="city"/>
-          <label
-            className="form-label"
-            htmlFor="comuna"
-          >
-            Comuna
-          </label>
-          <input
-            name="comuna"
-            value={values.comuna}
-            onChange={handleChange}
-            className="form-control"
-            type="text"
-            id="comuna"/>
-          <label
-            className="form-label"
-            htmlFor="phone"
-          >
-            Telefono
-          </label>
-          <input
-            name="phone"
-            value={values.phone}
-            onChange={handleChange}
-            className="form-control"
-            type="text"
-            id="phone"
-          />
-          <input
-            className="btn btn-primary"
-            type="submit"
-          />
-        </form>
-      </fieldset>
+      <OrderNewBreadscrumb
+        breadcrumb={breadcrumbs}
+        step={step}
+      />
+      {steps[step]}
     </>
   );
 };
