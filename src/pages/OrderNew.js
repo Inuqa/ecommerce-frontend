@@ -61,18 +61,28 @@ const OrderNew = () => {
   const handleSubmit = () => {
     axios.post(process.env.REACT_APP_BASE_API_URL + '/api/orders', {
       order: {
-        name: values.name,
-        last_name: values.last_name,
-        address: values.address,
-        city: values.city,
-        comuna: values.comuna,
-        phone: values.phone,
+        'name': values.name,
+        'last_name': values.last_name,
+        'address': values.address,
+        'city': values.city,
+        'comuna': values.comuna,
+        'phone': values.phone,
+        'pay_method': values['pay-method'],
+        'shipping_method': values['shipping-method'],
       },
       email: values.email,
       cart,
     },
     {withCredentials: true},
-    ).then((res) => setForm(res.data));
+    ).then((res) => {
+      console.log(res);
+      if (res.data.type === 'transfer') {
+        history.push(`/transactions/${res.data.order.uuid}`);
+      } else if (res.data.type === 'webpay') {
+        setForm(res.data);
+      }
+    })
+        .catch(console.log);
   };
 
   const handleStepPayment = () => {
@@ -92,6 +102,8 @@ const OrderNew = () => {
       'pay-method': ['Pago', false],
     });
   };
+
+  console.log(form);
 
   const steps = {
     [STEPS.information]: <OrderInformation
