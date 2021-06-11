@@ -4,6 +4,7 @@ import {useParams} from 'react-router-dom';
 import useForm from '../../hooks/useForm';
 import useVariants from '../../hooks/useVariants';
 import AdminSpinner from '../../components/AdminSpinner';
+import ProductMenu from '../../components/ProductMenu';
 
 const VariantsEdit = () => {
   const {handleChange, values, setValues} = useForm({
@@ -18,8 +19,6 @@ const VariantsEdit = () => {
   const [submitStatus, setSubmitStatus] = React.useState('idle');
   const [isLoading, setIsLoading] = React.useState(false);
   const {edit, editPatch} = useVariants();
-
-  console.log(productId, id);
 
   React.useEffect(() => {
     getVariant();
@@ -107,6 +106,7 @@ const VariantsEdit = () => {
           La variante no pudo ser creado, intentelo mas tarde.
           </div>
         }
+        <ProductMenu variant="variant" productId={productId}/>
         <fieldset>
           <form onSubmit={handleForm}>
             <label

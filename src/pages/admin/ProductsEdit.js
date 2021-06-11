@@ -4,6 +4,7 @@ import ContentHeader from '../../components/ContentHeader';
 import AdminSpinner from '../../components/AdminSpinner';
 import useForm from '../../hooks/useForm';
 import useProducts from '../../hooks/useProducts';
+import ProductMenu from '../../components/ProductMenu';
 
 const ProductsEdit = () => {
   const {handleChange, values, setValues} = useForm({
@@ -78,7 +79,11 @@ const ProductsEdit = () => {
     <>
       {isLoading && <AdminSpinner />
       }
-      <ContentHeader title="Editar producto"/>
+      <ContentHeader
+        title="Editar producto"
+        btn={`/admin/products/${id}/variants/new`}
+        btnVal="Crear variante"
+      />
       <div className="admin-content-wrapper">
         {submitStatus === 'success' &&
         <div
@@ -93,6 +98,7 @@ const ProductsEdit = () => {
           El producto no pudo ser editado correctamente intentelo mas tarde.
           </div>
         }
+        <ProductMenu product={'product'} productId={id} />
         <fieldset>
           <form onSubmit={handleForm}>
             <label
