@@ -77,6 +77,8 @@ const ProductIndex = () => {
         .then(() => doSearch());
   };
 
+  console.log(products);
+
   const renderProducts = products.map((item) =>
     <tr key={item.id}>
       <td>{item.id}</td>
@@ -91,12 +93,19 @@ const ProductIndex = () => {
         </Link>
         {
           item.discarded_at ?
+            item.price ?
             <span
               style={{cursor: 'pointer'}}
               onClick={() => handleRestore(item.id)}
             >
               <FontAwesomeIcon icon={faTrashRestore} />
             </span> :
+            <span
+              style={{cursor: 'not-allowed'}}
+            >
+              <FontAwesomeIcon icon={faTrashRestore} />
+            </span> :
+
             <span
               style={{cursor: 'pointer'}}
               onClick={() => handleRemove(item.id)}
