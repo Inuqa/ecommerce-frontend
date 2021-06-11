@@ -27,7 +27,9 @@ const Product = () => {
   }, []);
 
   React.useEffect(() => {
-    if (product) setSelectedVariant(product.variants[0].id);
+    if (product && product.master_price) {
+      setSelectedVariant(product.variants[0].id);
+    }
   }, [product]);
 
   const addToCart = () => {
@@ -54,9 +56,9 @@ const Product = () => {
     }
   };
 
-  console.log(quantity);
-
   let content;
+
+  console.log(product);
 
   if (productsStatus === 'loading') {
     content = <Spinner
@@ -65,6 +67,9 @@ const Product = () => {
       animation="border"
       variant="primary"
     />;
+  } else if (product && product.discarded_at) {
+    console.log(product, 'asdasd');
+    content = <h1>Este producto no se encuentra disponible</h1>;
   } else if (product) {
     console.log(product);
     content =
@@ -72,7 +77,11 @@ const Product = () => {
       <Col md={6}>
         <Row>
           <Col className="d-flex">
-            <img className="mx-auto img-fluid" src={`http://via.placeholder.com/500x500`} alt="" />
+            <img
+              className="mx-auto img-fluid"
+              src={product.master_image}
+              alt=""
+            />
           </Col>
         </Row>
       </Col>
