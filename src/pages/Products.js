@@ -38,7 +38,7 @@ const Product = () => {
         <div className="product-card">
           <img
             className="img-fluid"
-            src="http://via.placeholder.com/250x250"
+            src={item.master_image}
             alt=""
           />
           <p>{item.title}</p>
