@@ -88,7 +88,12 @@ const Cart = () => {
               variants[id] ?
                 (<tr key={id}>
                   <td>
-                    <img src={variants[id].image} alt="" />
+                    <img
+                      height="200"
+                      width="200"
+                      src={variants[id].image}
+                      alt=""
+                    />
                   </td>
                   <td>
                     <span className="ms-1">{variants[id].title}</span>
