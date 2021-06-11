@@ -1,6 +1,7 @@
 import React from 'react';
 import ContentHeader from '../../components/ContentHeader';
 import useForm from '../../hooks/useForm';
+import AdminSpinner from '../../components/AdminSpinner';
 import axios from 'axios';
 
 const ProductsCreate = () => {
@@ -9,12 +10,14 @@ const ProductsCreate = () => {
     image: null,
   });
 
+  const [isLoading, setIsLoading] = React.useState(false);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [errors, setErrors] = React.useState({});
   const [submitStatus, setSubmitStatus] = React.useState('idle');
 
 
   const handleSubmit = () => {
+    setIsLoading(true);
     const formData = new FormData();
     formData.append('product[title]', values.title);
     formData.append('product[master_image]', values.image);
@@ -23,8 +26,14 @@ const ProductsCreate = () => {
         formData,
         {withCredentials: true},
     )
-        .then(() => setSubmitStatus('success'))
-        .catch(() => setSubmitStatus('error'));
+        .then(() => {
+          setSubmitStatus('success');
+          setIsLoading(false);
+        })
+        .catch(() => {
+          setSubmitStatus('error');
+          setIsLoading(false);
+        });
   };
 
   const handleValidations = () => {
@@ -54,6 +63,7 @@ const ProductsCreate = () => {
 
   return (
     <>
+      {isLoading && <AdminSpinner />}
       <ContentHeader title="Crear producto"/>
       <div className="admin-content-wrapper">
         {submitStatus === 'success' &&
