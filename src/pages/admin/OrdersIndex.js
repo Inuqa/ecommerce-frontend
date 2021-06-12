@@ -25,8 +25,6 @@ const OrdersIndex = () => {
       },
   );
 
-  console.log(orders);
-
   const queryString = useLocation().search;
   const history = useHistory();
 

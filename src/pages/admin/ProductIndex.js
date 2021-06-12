@@ -41,7 +41,6 @@ const ProductIndex = () => {
 
   const handleQuery = (e) => {
     e.preventDefault();
-    console.log(url);
     history.push(`/admin/products?${url}`);
   };
 
@@ -64,7 +63,7 @@ const ProductIndex = () => {
           setProducts(res.data.products);
           setTotalPages(res.data.total_count);
           setLoading(false);
-        }).catch((error) => console.log(error));
+        }).catch((error) => console.error(error));
   };
 
   const handleRestore = (id) => {
@@ -76,8 +75,6 @@ const ProductIndex = () => {
     remove(id)
         .then(() => doSearch());
   };
-
-  console.log(products);
 
   const renderProducts = products.map((item) =>
     <tr key={item.id}>
