@@ -20,6 +20,7 @@ import VariantsCreate from './pages/admin/VariantsCreate';
 import VariantsEdit from './pages/admin/VariantsEdit';
 import VariantsIndex from './pages/admin/VariantsIndex';
 import AfterTransaction from './pages/AfterTransaction';
+import VariantsStock from './pages/admin/VariantsStock';
 import Container from 'react-bootstrap/Container';
 import {useDispatch} from 'react-redux';
 import {loadCart} from './features/cart/cartSlice';
@@ -67,6 +68,9 @@ function App() {
           </PrivateRoute>
           <PrivateRoute exact path="/admin/products/:id/variants/new">
             <VariantsCreate />
+          </PrivateRoute>
+          <PrivateRoute exact path="/admin/products/:id/variants/stock">
+            <VariantsStock />
           </PrivateRoute>
           <PrivateRoute
             exact
