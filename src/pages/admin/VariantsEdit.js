@@ -26,7 +26,7 @@ const VariantsEdit = () => {
 
   const getVariant = () => {
     setIsLoading(true);
-    edit(productId, id)
+    edit(id)
         .then((res) => {
           setValues(
               {
@@ -45,7 +45,7 @@ const VariantsEdit = () => {
     formData.append('variant[size]', values.size);
     formData.append('variant[price]', values.price);
     formData.append('variant[stock]', values.stock);
-    editPatch(productId, id, formData)
+    editPatch(id, formData)
         .then(() => {
           setSubmitStatus('success');
           setIsLoading(false);

@@ -32,13 +32,14 @@ const VariantsIndex = () => {
         .catch((err) => console.log(err));
   };
 
-  const handleRestore = (productId, id) => {
-    restore(productId, id)
+  const handleRestore = (id) => {
+    restore(id)
         .then(() => getVariants());
   };
 
-  const handleRemove = (productId, id) => {
-    remove(productId, id)
+  const handleRemove = (id) => {
+    console.log(id);
+    remove(id)
         .then(() => getVariants());
   };
 
@@ -59,13 +60,13 @@ const VariantsIndex = () => {
         {variant.discarded_at ?
           <span
             style={{cursor: 'pointer'}}
-            onClick={() => handleRestore(variant.product_id, variant.id)}
+            onClick={() => handleRestore(variant.id)}
           >
             <FontAwesomeIcon icon={faTrashRestore} />
           </span> :
             <span
               style={{cursor: 'pointer'}}
-              onClick={() => handleRemove(variant.product_id, variant.id)}
+              onClick={() => handleRemove(variant.id)}
             >
               <FontAwesomeIcon icon={faTrash} />
             </span>
