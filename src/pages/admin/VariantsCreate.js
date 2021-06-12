@@ -1,8 +1,8 @@
 import React from 'react';
 import ContentHeader from '../../components/ContentHeader';
 import useForm from '../../hooks/useForm';
-import axios from 'axios';
 import {useParams} from 'react-router-dom';
+import useVariants from '../../hooks/useVariants';
 
 const VariantsCreate = () => {
   const {handleChange, values} = useForm({
@@ -10,6 +10,7 @@ const VariantsCreate = () => {
     price: '',
     stock: '',
   });
+  const {create} = useVariants();
   const {id} = useParams();
 
   const [isSubmitting, setIsSubmitting] = React.useState(false);
@@ -22,12 +23,7 @@ const VariantsCreate = () => {
     formData.append('variant[size]', values.size);
     formData.append('variant[price]', values.price);
     formData.append('variant[stock]', values.stock);
-    axios.post(
-        process.env.REACT_APP_BASE_API_URL +
-      `/api/admin/products/${id}/variants`,
-        formData,
-        {withCredentials: true},
-    )
+    create(id, formData)
         .then(() => setSubmitStatus('success'))
         .catch(() => setSubmitStatus('error'));
   };
