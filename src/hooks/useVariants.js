@@ -1,16 +1,16 @@
 import axios from 'axios';
 
 const useVariants = () => {
-  const edit = (productId, id) => {
+  const edit = (id) => {
     return axios.get(process.env.REACT_APP_BASE_API_URL +
-      `/api/admin/products/${productId}/variants/${id}/edit`,
+      `/api/admin/variants/${id}/edit`,
     {withCredentials: true},
     );
   };
 
-  const editPatch = (productId, id, params) => {
+  const editPatch = (id, params) => {
     return axios.patch(process.env.REACT_APP_BASE_API_URL +
-      `/api/admin/products/${productId}/variants/${id}`,
+      `/api/admin/variants/${id}`,
     params,
     {withCredentials: true},
     );
@@ -23,21 +23,38 @@ const useVariants = () => {
     );
   };
 
-  const remove = (productId, id) => {
+  const remove = (id) => {
+    console.log(id);
     return axios.delete(process.env.REACT_APP_BASE_API_URL +
-      `/api/admin/products/${productId}/variants/${id}`,
+      `/api/admin//variants/${id}`,
     {withCredentials: true},
     );
   };
 
-  const restore = (productId, id) => {
+  const restore = (id) => {
     return axios.get(process.env.REACT_APP_BASE_API_URL +
-      `/api/admin/products/${productId}/variants/${id}/restore`,
+      `/api/admin/variants/${id}/restore`,
     {withCredentials: true},
     );
   };
 
-  return {index, edit, editPatch, restore, remove};
+  const create = (id, params) => {
+    return axios.post(
+        process.env.REACT_APP_BASE_API_URL +
+      `/api/admin/products/${id}/variants`,
+        params,
+        {withCredentials: true},
+    );
+  };
+
+  return {
+    index,
+    edit,
+    editPatch,
+    restore,
+    remove,
+    create,
+  };
 };
 
 export default useVariants;
