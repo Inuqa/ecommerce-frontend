@@ -76,13 +76,11 @@ const Product = () => {
     <Row className="mt-5">
       <Col md={6}>
         <Row>
-          <Col className="d-flex">
-            <img
-              className="mx-auto img-fluid"
-              src={product.master_image}
-              alt=""
-            />
-          </Col>
+          <img
+            className="mx-auto img-fluid"
+            src={product.master_image}
+            alt=""
+          />
         </Row>
       </Col>
       <Col md={6}>
@@ -121,7 +119,9 @@ const Product = () => {
               <FontAwesomeIcon icon={faChevronUp} />
             </button>
           </div>
-          <Button className="p-3" onClick={addToCart}>Añadir al carrito</Button>
+          <Button
+            className="p-3"
+            onClick={addToCart}>Añadir al carrito</Button>
         </div>
       </Col>
     </Row>;

@@ -26,16 +26,14 @@ const Product = () => {
         .then(() => setIsloading(false));
   };
 
-  console.log(products);
-
   React.useEffect(() => {
     getProducts();
   }, [queryString]);
 
   const renderArr = products.map((item) => (
-    <Col key={item.id} md={3}>
+    <Col key={item.id} xs={6} md={3} lg={2}>
       <Link to={`/products/${item.id}`}>
-        <div className="product-card">
+        <div className="product-card d-flex flex-column">
           <img
             className="img-fluid"
             src={item.master_image}
@@ -60,10 +58,13 @@ const Product = () => {
   return (
     <Row className="mt-5">
       {renderArr}
-      <Pagination
-        url={'/products?'}
-        pages={totalPages}
-      />
+      <div className="d-flex justify-content-center">
+        <Pagination
+          limit={12}
+          url={'/products?'}
+          pages={totalPages}
+        />
+      </div>
     </Row>
   );
 };
