@@ -11,7 +11,6 @@ const PrivateRoute = ({children, ...rest}) => {
   console.log(auth);
 
   if (auth.user === undefined) {
-    console.log(auth.user, 'private');
     return <Spinner
       style={{position: 'absolute', top: '50%', left: '50%'}}
       className="loading-spinner"

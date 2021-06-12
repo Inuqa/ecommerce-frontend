@@ -21,6 +21,7 @@ import '../styles/cart.css';
 
 const Cart = () => {
   const [total, setTotal] = React.useState(0);
+  const [stockError, setStockError] = React.useState(false);
   const cart = useSelector(selectCart);
   const variants = useSelector((state) => state.variants);
   const dispatch = useDispatch();
@@ -51,7 +52,12 @@ const Cart = () => {
   }, [variants, cart]);
 
   const handleIncreaseQuantity = (e, id, quantity) => {
-    dispatch(updateQuantity({id, quantity: quantity + 1}));
+    if (quantity >= variants[id].stock) {
+      dispatch(updateQuantity({id, quantity: variants[id].stock}));
+      setStockError(id);
+    } else {
+      dispatch(updateQuantity({id, quantity: quantity + 1}));
+    }
   };
   const handleDecreaseQuantity = (e, id, quantity) => {
     if (quantity === 1) {
@@ -64,18 +70,36 @@ const Cart = () => {
   const handleOnBlur = (e, id) => {
     if (e.target.value === '') {
       dispatch(updateQuantity({id, quantity: 1}));
+    } else if (+e.target.value >= variants[id].stock) {
+      dispatch(updateQuantity({id, quantity: variants[id].stock}));
+      setStockError(id);
     } else if (+e.target.value === 0) {
       dispatch(removeItem(id));
     }
   };
 
+  console.log(variants);
+
   return (
     <>
+      {stockError &&
+      <div
+        className="alert alert-warning"
+        role="alert"
+      >
+        <span
+          style={{color: 'gray'}}
+        >
+          {`${variants[stockError].title}
+          -Talla ${variants[stockError].size.toUpperCase()}-`}
+        </span> no cuenta con mas stock.
+      </div>}
       <Row>
         <Col lg={8}>
           <Table>
             <thead>
               <tr>
+                <th></th>
                 <th>Producto</th>
                 <th>Precio</th>
                 <th></th>
@@ -96,7 +120,12 @@ const Cart = () => {
                     />
                   </td>
                   <td>
-                    <span className="ms-1">{variants[id].title}</span>
+                    <span>
+                      {variants[id].title}
+                      <p>
+                      Talla {variants[id].size.toUpperCase()}
+                      </p>
+                    </span>
                   </td>
                   <td>{variants[id].price}</td>
                   <td>
