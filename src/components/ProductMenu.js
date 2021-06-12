@@ -18,7 +18,7 @@ const ProductMenu = ({productId, product, variant, stock}) => {
         <li className="nav-item">
           <Link
             className={`nav-link ${stock ? 'active' : ''}`}
-            to={`/admin/products/${productId}/stock`}>Stock</Link>
+            to={`/admin/products/${productId}/variants/stock`}>Stock</Link>
         </li>
       </ul>
     </>
