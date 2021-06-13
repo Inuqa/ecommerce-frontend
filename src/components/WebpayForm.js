@@ -1,22 +1,23 @@
 import React from 'react';
 
 const WebpayForm = ({form}) => {
+  console.log(form);
   return (
     <>
       <div className="card">
         <div className="card-header">
-            Resumen de la orden
+            Resumen de la orden.
         </div>
         <div className="card-body">
           <div
             className="card-text"
           >
-              Numero de la orden: {form.order.id}
+              Codigo de la orden: {form.order.uuid}
           </div>
           <div
             className="card-text"
           >
-              total a pagar:
+              total a pagar: {form.order.amount}
           </div>
         </div>
       </div>
