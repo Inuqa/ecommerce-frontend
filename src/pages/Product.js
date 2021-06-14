@@ -6,7 +6,6 @@ import {useParams} from 'react-router-dom';
 import {addItem} from '../features/cart/cartSlice';
 import {fetchProduct, selectProduct} from '../features/products/productsSlice';
 import {useDispatch, useSelector} from 'react-redux';
-import Form from 'react-bootstrap/Form';
 import '../styles/product.css';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faChevronUp, faChevronDown} from '@fortawesome/free-solid-svg-icons';
@@ -86,14 +85,14 @@ const Product = () => {
       <Col md={6}>
         <h1 className="text-center">{product.title}</h1>
         <h2 className="text-center">{product.master_price}</h2>
-        <Form.Control as="select" onChange={handleSelected}>
+        <select className="form-select" onChange={handleSelected}>
           {product.variants.map((item) => (
             <option
               key={item.id}
               value={item.id}
             >{item.size}</option>
           ))}
-        </Form.Control>
+        </select>
         <div className="d-flex flex-column mt-2">
           <div className="product number-input mx-auto my-2">
             <button
