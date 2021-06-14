@@ -1,7 +1,7 @@
 import React from 'react';
 import ContentHeader from '../../components/ContentHeader';
 import Spinner from 'react-bootstrap/Spinner';
-import {useLocation, useHistory} from 'react-router-dom';
+import {Link, useLocation, useHistory} from 'react-router-dom';
 import useParams from '../../hooks/useParams';
 import useQuery from '../../hooks/useQuery';
 import Pagination from '../../components/Pagination';
@@ -61,7 +61,7 @@ const OrdersIndex = () => {
   const renderOrders = orders.map((item) =>
     <tr key={item.id}>
       <td>{item.created_at}</td>
-      <td>{item.id}</td>
+      <td><Link to={`/admin/orders/${item.id}`}>{item.id}</Link></td>
       <td>{item.status}</td>
       <td>{item.email}</td>
       <td>{item.amount}</td>
