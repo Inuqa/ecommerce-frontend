@@ -1,8 +1,7 @@
 import React from 'react';
-import {useSelector} from 'react-redux';
+import {useSelector, connect} from 'react-redux';
 import {
   removeItem,
-  selectCart,
   updateQuantity,
 } from '../features/cart/cartSlice';
 import {
@@ -19,10 +18,9 @@ import {faChevronUp, faChevronDown} from '@fortawesome/free-solid-svg-icons';
 import '../styles/cart.css';
 
 
-const Cart = () => {
+const Cart = ({cart}) => {
   const [total, setTotal] = React.useState(0);
   const [stockError, setStockError] = React.useState(false);
-  const cart = useSelector(selectCart);
   const variants = useSelector((state) => state.variants);
   const dispatch = useDispatch();
 
@@ -30,6 +28,8 @@ const Cart = () => {
   const handleQuantity = (e, id) => {
     dispatch(updateQuantity(({id, quantity: e.target.value})));
   };
+
+  console.log(cart);
 
   React.useEffect(() => {
     const missingIds = [];
@@ -50,6 +50,15 @@ const Cart = () => {
     }
     setTotal(total);
   }, [variants, cart]);
+
+  React.useEffect(() => {
+    Object.entries(variants).forEach(([key, val]) => {
+      console.log(val, "asdasd");
+      if (val.stock === 0) {
+        dispatch(removeItem(val.id));
+      }
+    });
+  }, [variants]);
 
   const handleIncreaseQuantity = (e, id, quantity) => {
     if (quantity >= variants[id].stock) {
@@ -191,4 +200,8 @@ const Cart = () => {
   );
 };
 
-export default Cart;
+const mapStateToProps = (state) => {
+  return {cart: state.cart};
+};
+
+export default connect(mapStateToProps)(Cart);
