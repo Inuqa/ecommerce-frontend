@@ -1,7 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import useForm from '../hooks/useForm';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import {clearCart} from '../features/cart/cartSlice';
 import useQuery from '../hooks/useQuery';
 import useValidations from '../hooks/useValidations';
 import OrderInformation from '../components/OrderInformation';
@@ -18,7 +19,6 @@ const STEPS = {
   pay_method: 'pay-method',
 };
 
-
 const OrderNew = () => {
   const {handleChange, values} = useForm({
     'email': '',
@@ -31,6 +31,8 @@ const OrderNew = () => {
     'pay-method': '',
     'shipping-method': '',
   });
+
+  const dispatch = useDispatch();
 
   const [breadcrumbs, setBreadscrumb] = React.useState({
     'information': ['Informacion', true],
@@ -77,6 +79,7 @@ const OrderNew = () => {
     ).then((res) => {
       console.log(res);
       if (res.data.type === 'transfer') {
+        dispatch(clearCart());
         history.push(`/transactions/${res.data.order.uuid}`);
       } else if (res.data.type === 'webpay') {
         setForm(res.data);
