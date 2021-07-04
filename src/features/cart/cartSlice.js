@@ -31,6 +31,12 @@ export const cartSlice = createSlice({
       state[`${action.payload.id}`] = action.payload.quantity;
       localStorage.setItem('cart', JSON.stringify(state));
     },
+    clearCart: (state, action) => {
+      Object.keys(state).forEach((item) => {
+        delete state[item];
+      });
+      localStorage.setItem('cart', JSON.stringify(state));
+    },
   },
 });
 
@@ -40,6 +46,7 @@ export const {
   loadCart,
   getProducts,
   updateQuantity,
+  clearCart,
 } = cartSlice.actions;
 
 export const selectCart = (state) => state.cart;
