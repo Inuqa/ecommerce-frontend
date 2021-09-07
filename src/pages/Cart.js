@@ -53,9 +53,9 @@ const Cart = ({cart}) => {
 
   React.useEffect(() => {
     Object.entries(variants).forEach(([key, val]) => {
-      console.log(val, "asdasd");
-      if (val.stock === 0) {
+      if (val.stock <= 0) {
         dispatch(removeItem(val.id));
+        setStockError('Algunos productos ya no se encuentran disponibles');
       }
     });
   }, [variants]);
@@ -63,7 +63,7 @@ const Cart = ({cart}) => {
   const handleIncreaseQuantity = (e, id, quantity) => {
     if (quantity >= variants[id].stock) {
       dispatch(updateQuantity({id, quantity: variants[id].stock}));
-      setStockError(id);
+      setStockError('Ya no cuenta con mas Stock');
     } else {
       dispatch(updateQuantity({id, quantity: quantity + 1}));
     }
@@ -87,7 +87,7 @@ const Cart = ({cart}) => {
     }
   };
 
-  console.log(variants);
+  console.log(stockError[0]);
 
   return (
     <>
@@ -99,9 +99,7 @@ const Cart = ({cart}) => {
         <span
           style={{color: 'gray'}}
         >
-          {`${variants[stockError].title}
-          -Talla ${variants[stockError].size.toUpperCase()}-`}
-        </span> no cuenta con mas stock.
+        </span>{stockError}
       </div>}
       <Row>
         <Col lg={8}>

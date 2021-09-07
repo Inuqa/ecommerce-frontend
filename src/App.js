@@ -18,6 +18,7 @@ import OrderShow from './pages/admin/OrderShow';
 import ProductsCreate from './pages/admin/ProductsCreate';
 import ProductsEdit from './pages/admin/ProductsEdit';
 import VariantsCreate from './pages/admin/VariantsCreate';
+import CategoriesIndex from './pages/admin/CategoriesIndex';
 import VariantsEdit from './pages/admin/VariantsEdit';
 import VariantsIndex from './pages/admin/VariantsIndex';
 import AfterTransaction from './pages/AfterTransaction';
@@ -63,6 +64,9 @@ function App() {
           </PrivateRoute>
           <PrivateRoute exact path="/admin/products/new">
             <ProductsCreate />
+          </PrivateRoute>
+          <PrivateRoute exact path="/admin/categories">
+            <CategoriesIndex />
           </PrivateRoute>
           <PrivateRoute exact path="/admin/products/:id/edit">
             <ProductsEdit />
