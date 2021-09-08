@@ -14,6 +14,7 @@ import Button from 'react-bootstrap/Button';
 const Product = () => {
   const [quantity, setQuantity] = React.useState(1);
   const [selectedVariant, setSelectedVariant] = React.useState();
+  const [hasVariants, setHasVariants] = React.useState(false);
   const dispatch = useDispatch();
   const {id} = useParams();
 
@@ -28,6 +29,9 @@ const Product = () => {
   React.useEffect(() => {
     if (product && product.master_price) {
       setSelectedVariant(product.variants[0].id);
+      if (product.variants.length > 1) {
+        setHasVariants(true);
+      }
     }
   }, [product]);
 
@@ -57,8 +61,6 @@ const Product = () => {
 
   let content;
 
-  console.log(product);
-
   if (productsStatus === 'loading') {
     content = <Spinner
       style={{position: 'absolute', top: '50%', left: '50%'}}
@@ -67,7 +69,6 @@ const Product = () => {
       variant="primary"
     />;
   } else if (product && product.discarded_at) {
-    console.log(product, 'asdasd');
     content = <h1>Este producto no se encuentra disponible</h1>;
   } else if (product) {
     console.log(product);
@@ -85,14 +86,16 @@ const Product = () => {
       <Col md={6}>
         <h1 className="text-center">{product.title}</h1>
         <h2 className="text-center">{product.master_price}</h2>
-        <select className="form-select" onChange={handleSelected}>
+        <h5 className="text-center">{product.description}</h5>
+        {hasVariants ? <select className="form-select" onChange={handleSelected}>
           {product.variants.map((item) => (
             <option
               key={item.id}
               value={item.id}
             >{item.size}</option>
           ))}
-        </select>
+        </select> : ''
+        }
         <div className="d-flex flex-column mt-2">
           <div className="product number-input mx-auto my-2">
             <button
