@@ -10,9 +10,11 @@ import '../styles/product.css';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faChevronUp, faChevronDown} from '@fortawesome/free-solid-svg-icons';
 import Button from 'react-bootstrap/Button';
+import SliderForProducts from '../components/SliderForProducts'
 
 const Product = () => {
   const [quantity, setQuantity] = React.useState(1);
+  const [images, setImages] = React.useState([]);
   const [selectedVariant, setSelectedVariant] = React.useState();
   const [hasVariants, setHasVariants] = React.useState(false);
   const dispatch = useDispatch();
@@ -27,6 +29,9 @@ const Product = () => {
   }, []);
 
   React.useEffect(() => {
+    if (product) {
+      setImages(product.images)
+    }
     if (product && product.master_price) {
       setSelectedVariant(product.variants[0].id);
       if (product.variants.length > 1) {
@@ -34,6 +39,7 @@ const Product = () => {
       }
     }
   }, [product]);
+
 
   const addToCart = () => {
     dispatch(addItem({productId: selectedVariant, quantity: +quantity}));
@@ -58,6 +64,7 @@ const Product = () => {
       setQuantity(quantity - 1);
     }
   };
+
 
   let content;
 
@@ -132,6 +139,7 @@ const Product = () => {
   return (
     <>
       {content}
+      <SliderForProducts />
     </>
   );
 };
