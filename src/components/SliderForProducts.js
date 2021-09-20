@@ -1,17 +1,21 @@
 import React from 'react';
-import {Splide, SplideSlide} from '@splidejs/react-splide';
-import '@splidejs/splide/dist/css/themes/splide-default.min.css';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import {Carousel} from 'react-responsive-carousel';
 
-const SliderForProducts = () => {
+const SliderForProducts = ({images}) => {
+
+  let renderImages = '';
+
+  console.log(images);
+  if (images) {
+    renderImages = images.map((image) =>
+      <img key={image}src={image} alt="productImage" />,
+    );
+  }
   return (
-    <Splide>
-      <SplideSlide>
-        <img src="https://via.placeholder.com/468?text=1" alt="Image 1"/>
-      </SplideSlide>
-      <SplideSlide>
-        <img src="https://via.placeholder.com/468?text=2" alt="Image 2"/>
-      </SplideSlide>
-    </Splide>
+    <Carousel thumbWidth={50}>
+      {renderImages}
+    </Carousel>
   );
 };
 

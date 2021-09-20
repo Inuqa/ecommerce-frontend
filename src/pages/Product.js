@@ -78,16 +78,11 @@ const Product = () => {
   } else if (product && product.discarded_at) {
     content = <h1>Este producto no se encuentra disponible</h1>;
   } else if (product) {
-    console.log(product);
     content =
     <Row className="mt-5">
       <Col md={6}>
         <Row>
-          <img
-            className="mx-auto img-fluid"
-            src={product.master_image}
-            alt=""
-          />
+          <SliderForProducts images={images} />
         </Row>
       </Col>
       <Col md={6}>
