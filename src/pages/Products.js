@@ -5,6 +5,7 @@ import axios from 'axios';
 import {Link, useLocation} from 'react-router-dom';
 import Spinner from 'react-bootstrap/Spinner';
 import Pagination from '../components/Pagination';
+import AsyncSelect from 'react-select/async';
 
 const Product = () => {
   const [products, setProducts] = React.useState([]);
@@ -12,6 +13,13 @@ const Product = () => {
   const [totalPages, setTotalPages] = React.useState(1);
 
   const queryString = useLocation().search;
+
+  const loadOptions = async () => {
+    const a = await axios.get(
+        process.env.REACT_APP_BASE_API_URL + `/api/categories`,
+    );
+    return a.data.categories;
+  };
 
   const getProducts = () => {
     setIsloading(true);
@@ -31,15 +39,15 @@ const Product = () => {
   }, [queryString]);
 
   const renderArr = products.map((item) => (
-    <Col key={item.id} xs={6} md={3} lg={2}>
+    <Col key={item.id} xs={8} md={6} lg={3} className='m-auto'>
       <Link to={`/products/${item.id}`}>
-        <div className="product-card d-flex flex-column">
+        <div className="product-card d-flex flex-column m-1">
           <img
             className="img-fluid"
             src={item.master_image}
             alt=""
           />
-          <p>{item.title}</p>
+          <p className='text-truncate'>{item.title}</p>
           <p>{item.price}</p>
         </div>
       </Link>
@@ -57,7 +65,19 @@ const Product = () => {
 
   return (
     <Row className="mt-5">
-      {renderArr}
+      <Col
+        sm={4}
+        className='border d-none d-sm-block d-flex flex-column'
+      >
+        <AsyncSelect
+          cacheOptions
+          loadOptions={loadOptions}
+          defaultOptions
+        />
+      </Col>
+      <Col className='d-flex flex-wrap justify-content-between'>
+        {renderArr}
+      </Col>
       <div className="d-flex justify-content-center">
         <Pagination
           limit={12}

@@ -13,6 +13,7 @@ import ProductIndex from './pages/admin/ProductIndex';
 import Home from './pages/Home';
 import Cart from './pages/Cart';
 import OrderNew from './pages/OrderNew';
+import CategoriesShow from './pages/CategoriesShow';
 import OrdersIndex from './pages/admin/OrdersIndex';
 import OrderShow from './pages/admin/OrderShow';
 import ProductsCreate from './pages/admin/ProductsCreate';
@@ -39,8 +40,8 @@ function App() {
   }, []);
   return (
     <Router>
+      <Header />
       <Container>
-        <Header />
         <Switch>
           <Route path="/about">
           </Route>
@@ -55,6 +56,9 @@ function App() {
           </Route>
           <Route exact path="/order/new">
             <OrderNew />
+          </Route>
+          <Route exact path="/categories/:name">
+            <CategoriesShow />
           </Route>
           <PrivateRoute exact path="/admin">
             <Redirect to="/admin/orders" />
