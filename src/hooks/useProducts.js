@@ -37,6 +37,14 @@ const useProducts = () => {
     );
   };
 
-  return {search, restore, remove, edit, editPatch};
+  const create = (params) => {
+    return axios.post(
+        process.env.REACT_APP_BASE_API_URL + `/api/admin/products/`,
+        params,
+        {withCredentials: true},
+    );
+  };
+
+  return {search, restore, remove, edit, editPatch, create};
 };
 export default useProducts;

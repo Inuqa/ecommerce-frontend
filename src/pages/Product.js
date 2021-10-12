@@ -10,7 +10,7 @@ import '../styles/product.css';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faChevronUp, faChevronDown} from '@fortawesome/free-solid-svg-icons';
 import Button from 'react-bootstrap/Button';
-import SliderForProducts from '../components/SliderForProducts'
+import SliderForProducts from '../components/SliderForProducts';
 
 const Product = () => {
   const [quantity, setQuantity] = React.useState(1);
@@ -30,7 +30,7 @@ const Product = () => {
 
   React.useEffect(() => {
     if (product) {
-      setImages(product.images)
+      setImages(product.images);
     }
     if (product && product.master_price) {
       setSelectedVariant(product.variants[0].id);
@@ -89,7 +89,9 @@ const Product = () => {
         <h1 className="text-center">{product.title}</h1>
         <h2 className="text-center">{product.master_price}</h2>
         <h5 className="text-center">{product.description}</h5>
-        {hasVariants ? <select className="form-select" onChange={handleSelected}>
+        {hasVariants ? <select
+          className="form-select"
+          onChange={handleSelected}>
           {product.variants.map((item) => (
             <option
               key={item.id}

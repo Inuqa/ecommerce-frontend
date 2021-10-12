@@ -44,7 +44,6 @@ const Header = () => {
       />
     );
   };
-  console.log(menuItems());
 
   const location = useLocation();
   if (location.pathname.includes('/admin')) {
@@ -64,7 +63,7 @@ const Header = () => {
             </Link>
           </Nav.Item>
           <NavDropdown title='Products'>
-              {menuItems()}
+            {menuItems()}
           </NavDropdown>
           <Nav.Item>
             <Link

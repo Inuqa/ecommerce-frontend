@@ -54,7 +54,8 @@ const VariantsIndex = () => {
       <td>
         <Link
           to={
-            `/admin/products/${variant.product_id}/variants/${variant.id}/edit`}>
+            `/admin/products/${variant.product_id}/variants/${variant.id}/edit`
+          }>
           <FontAwesomeIcon icon={faEdit}/>
         </Link>
         {variant.discarded_at ?

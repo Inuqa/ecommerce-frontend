@@ -19,7 +19,12 @@ const CategoriesIndex = () => {
   const renderCategories = categories.map((item) =>
     <tr key={item.id}>
       <td>{item.id}</td>
-      <td>{item.name}</td>
+      <td>{<Link
+        to={`/admin/categories/${item.id}/edit`}
+      >
+        {item.name}
+      </Link>}
+      </td>
     </tr>,
   );
 
@@ -27,11 +32,11 @@ const CategoriesIndex = () => {
     <>
       <ContentHeader
         title={'Categorias'}
-        btn='#'
+        btn='/admin/categories/new'
         btnVal='Crear Categoria'
       />
       <div className="admin-content-wrapper">
-        <table>
+        <table className='table'>
           <thead>
             <tr>
               <th>id</th>

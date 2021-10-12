@@ -50,7 +50,14 @@ const AdminHeader = () => {
             </li>
             <li className="nav-item">
               <Link
-                to="#"className="nav-link"
+                to="/admin/categories" className="nav-link"
+              >
+              Categorias
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link
+                to="#" className="nav-link"
               >
               Stock
               </Link>

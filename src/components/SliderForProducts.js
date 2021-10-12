@@ -3,7 +3,6 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import {Carousel} from 'react-responsive-carousel';
 
 const SliderForProducts = ({images}) => {
-
   let renderImages = '';
 
   console.log(images);

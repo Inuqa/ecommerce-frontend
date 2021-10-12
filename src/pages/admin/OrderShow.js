@@ -126,7 +126,11 @@ const OrderShow = () => {
           <tbody>
             {order.line_items.map((variant) =>
               <tr key={variant.id}>
-                <td><Link to={`/products/${variant.product_id}`}>{variant.title}</Link></td>
+                <td>
+                  <Link to={`/products/${variant.product_id}`}>
+                    {variant.title}
+                  </Link>
+                </td>
                 <td>{variant.quantity}</td>
                 <td>{variant.size}</td>
               </tr>,

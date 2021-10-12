@@ -5,6 +5,8 @@ import AdminSpinner from '../../components/AdminSpinner';
 import useForm from '../../hooks/useForm';
 import useProducts from '../../hooks/useProducts';
 import ProductMenu from '../../components/ProductMenu';
+import {Dropzone, FileItem, FullScreenPreview} from 'dropzone-ui';
+import useUrlToFile from '../../hooks/useUrlToFile';
 
 const ProductsEdit = () => {
   const {handleChange, values, setValues} = useForm({
@@ -18,19 +20,35 @@ const ProductsEdit = () => {
   const [image, setImage] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(false);
   const {edit, editPatch} = useProducts();
+  const [files, setFiles] = React.useState([]);
+  const [imageSrc, setImageSrc] = React.useState(undefined);
 
+
+  const updateFiles = (incommingFiles) => {
+    setFiles(incommingFiles);
+  };
+
+  const onDelete = (id) => {
+    setFiles(files.filter((x) => x.id !== id));
+  };
+
+  const handleSee = (imageSource) => {
+    setImageSrc(imageSource);
+  };
 
   const {id} = useParams();
   React.useEffect(() => {
     getProduct();
   }, [id]);
 
+  console.log(files);
+
   const handleSubmit = () => {
     setIsLoading(true);
     const formData = new FormData();
-    if (values.image) {
-      formData.append('product[master_image]', values.image);
-    }
+    files.forEach((image) => {
+      formData.append('product[images][]', image.file);
+    });
     formData.append('product[title]', values.title);
     editPatch(id, formData)
         .then(() => {
@@ -47,11 +65,23 @@ const ProductsEdit = () => {
     setIsLoading(true);
     edit(id)
         .then((res) => {
+          getImages(res.data.images);
           setValues({title: res.data.product.title});
           setImage(res.data.image);
           setIsLoading(false);
         });
   };
+
+  const getImages = (images) => {
+    const decodedImages = [];
+    images.forEach((image, index) => {
+      const a = useUrlToFile(image, `asd${index}.png`);
+      decodedImages.push({errors: [], file: a, valid: true, id: index + 5});
+    });
+    setFiles(decodedImages);
+  };
+
+  console.log(files)
 
   const handleValidations = () => {
     const errors = {};
@@ -130,13 +160,35 @@ const ProductsEdit = () => {
             >
               {errors.image}
             </p>}
-            <input
-              onChange={handleChange}
-              name="image"
-              className="form-control"
-              type="file"
-              accept="image/*"
-            />
+            <Dropzone
+              view={'list'}
+              onChange={updateFiles}
+              value={files}
+              maxFiles={5}
+              maxFileSize={2998000}
+              label="Suelta tus archivos aquí"
+              accept=".png,image/*"
+              uploadingMessage={'Uploading...'}
+              localization={'ES-es'}
+            >
+              {files.map((file) => (
+                <FileItem
+                  key={file.file.lastModified}
+                  {...file}
+                  onDelete={onDelete}
+                  onSee={handleSee}
+                  localization={'ES-es'}
+                  preview
+                  info
+                  hd
+                />
+              ))}
+              <FullScreenPreview
+                imgSource={imageSrc}
+                openImage={imageSrc}
+                onClose={(e) => handleSee(undefined)}
+              />
+            </Dropzone>
             <input
               className="btn btn-primary mt-2"
               type="submit"

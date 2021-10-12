@@ -8,10 +8,10 @@ const useCategories = () => {
     );
   };
 
-  const normalCategoriesShow = (category) => {
+  const normalCategoriesShow = (category, queryParams) => {
     return axios.get(
         process.env.REACT_APP_BASE_API_URL +
-        `/api/categories/${category}`,
+        `/api/categories/${category}${queryParams}`,
     );
   };
 
@@ -22,8 +22,58 @@ const useCategories = () => {
         {withCredentials: true},
     );
   };
+  const adminEdit = (id) => {
+    return axios.get(
+        process.env.REACT_APP_BASE_API_URL +
+      `/api/admin/categories/${id}/edit`,
+        {withCredentials: true},
+    );
+  };
 
-  return {index, normalIndex, normalCategoriesShow};
+  const getPropertyTypes = (name) => {
+    return axios.get(
+        process.env.REACT_APP_BASE_API_URL +
+      `/api/categories/${name}/category_properties`,
+    );
+  };
+
+  const createCategory = (params) => {
+    return axios.post(
+        process.env.REACT_APP_BASE_API_URL +
+      `/api/admin/categories`,
+        params,
+        {withCredentials: true},
+    );
+  };
+
+  const updateCategory = (id, params) => {
+    return axios.patch(
+        process.env.REACT_APP_BASE_API_URL +
+      `/api/admin/categories/${id}`,
+        params,
+        {withCredentials: true},
+    );
+  };
+
+  const getCategoryProperties = (id) => {
+    return axios.get(
+        process.env.REACT_APP_BASE_API_URL +
+      `/api/categories/${id}/category_properties`,
+        params,
+        {withCredentials: true},
+    );
+  };
+
+  return {
+    index,
+    normalIndex,
+    normalCategoriesShow,
+    getPropertyTypes,
+    createCategory,
+    adminEdit,
+    updateCategory,
+    getPropertyTypes,
+  };
 };
 
 export default useCategories;
